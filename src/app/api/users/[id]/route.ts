@@ -93,7 +93,7 @@ export async function DELETE(
          WHERE id = $1`,
       [id, deleted_by, deleted_at]
     );
-    return NextResponse.json({ message: "User soft-deleted" });
+    return NextResponse.json({ message: "User Deleted" });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ message: "Delete failed" }, { status: 500 });
