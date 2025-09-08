@@ -7,8 +7,10 @@ export async function GET() {
       `SELECT id, name, email, phone, role, is_active FROM core.users WHERE is_deleted = false`
     );
     return NextResponse.json(result.rows);
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ message: "Server error " }, { status: 500 });
+  } catch (err: any) {
+    let message = "Something went wrong";
+
+    if (err instanceof Error) message = err.message;
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

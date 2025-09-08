@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import { pool } from "../../../../db/config/config";
+import { pool } from "../../../../../db/config/config";
 import { validateRegisterSchema } from "./validators";
 
 export async function POST(req: Request) {
@@ -38,8 +38,10 @@ export async function POST(req: Request) {
     );
 
     return NextResponse.json({ userId: result.rows[0].id }, { status: 201 });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ message: "Server Error" }, { status: 500 });
+  } catch (err: any) {
+    let message = "Something went wrong";
+
+    if (err instanceof Error) message = err.message;
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

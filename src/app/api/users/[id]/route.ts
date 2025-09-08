@@ -20,9 +20,11 @@ export async function GET(
       );
 
     return NextResponse.json(result.rows[0]);
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
+  } catch (err: any) {
+    let message = "Something went wrong";
+
+    if (err instanceof Error) message = err.message;
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -67,9 +69,11 @@ export async function PUT(
       [...values, id]
     );
     return NextResponse.json({ message: "User updated" });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ message: "Update failed" }, { status: 500 });
+  } catch (err: any) {
+    let message = "Something went wrong";
+
+    if (err instanceof Error) message = err.message;
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -94,8 +98,10 @@ export async function DELETE(
       [id, deleted_by, deleted_at]
     );
     return NextResponse.json({ message: "User Deleted" });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ message: "Delete failed" }, { status: 500 });
+  } catch (err: any) {
+    let message = "Something went wrong";
+
+    if (err instanceof Error) message = err.message;
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
