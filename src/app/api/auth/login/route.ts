@@ -4,10 +4,12 @@ import bcrypt from "bcrypt";
 import jwt, { SignOptions, Secret } from "jsonwebtoken";
 import { validateLoginSchema } from "./validators";
 import dotenv from "dotenv";
+import { REDIRECT_ERROR_CODE } from "next/dist/client/components/redirect-error";
 
 dotenv.config();
 
 export async function POST(req: Request) {
+  const ERROR_CODE = "AUTH-02";
   try {
     const body = await req.json();
 
@@ -64,6 +66,9 @@ export async function POST(req: Request) {
     let message = "Something went wrong";
 
     if (err instanceof Error) message = err.message;
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(
+      { error: message, error_code: ERROR_CODE },
+      { status: 500 }
+    );
   }
 }

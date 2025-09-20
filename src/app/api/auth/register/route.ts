@@ -4,12 +4,13 @@ import { pool } from "../../../../../db/config/config";
 import { validateRegisterSchema } from "./validators";
 
 export async function POST(req: Request) {
+  const ERROR_CODE = "AUTH-01";
   const body = await req.json();
   const { results, error } = await validateRegisterSchema(body);
 
   if (error) {
     console.error(error);
-    return NextResponse.json(error);
+    return NextResponse.json({ errors: error });
   }
   const { name, email, password, phone } = body;
 
@@ -42,6 +43,9 @@ export async function POST(req: Request) {
     let message = "Something went wrong";
 
     if (err instanceof Error) message = err.message;
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(
+      { error: message, error_code: ERROR_CODE },
+      { status: 500 }
+    );
   }
 }

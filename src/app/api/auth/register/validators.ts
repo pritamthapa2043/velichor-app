@@ -1,25 +1,31 @@
 import * as yup from "yup";
 
 const registerSchema = yup.object({
-  name: yup.string().required("Name is required"),
+  name: yup.string().required("Name is required").trim(),
   email: yup
     .string()
+    .trim()
     .email("Invalid email format")
     .required("Email is required"),
   phone: yup
     .string()
+    .trim()
     .min(6, "Phone number too short")
     .max(15, "Phone number too long")
     .required("Phone number is required"),
   password: yup
     .string()
+    .trim()
     .min(6, "Password must be at least 6 characters")
     .required("Password is required"),
 });
 
 export async function validateRegisterSchema(data: any) {
   try {
-    const results = await registerSchema.validate(data, { abortEarly: false });
+    const results = await registerSchema.validate(data, {
+      abortEarly: false,
+      stripUnknown: true,
+    });
     return { results, error: null };
   } catch (err: any) {
     const error: { [key: string]: string[] } = {};
