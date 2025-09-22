@@ -1,35 +1,32 @@
 import { NextResponse, NextRequest } from "next/server";
-import { validateAddCategorySchema } from "./[id]/validators";
 import { pool } from "../../../../db/config/config";
+import { validateAddStoreSchema } from "./[id]/validators";
 
 export async function POST(req: NextRequest) {
-  const ERROR_CODE = "CAT-01";
+  const ERROR_CODE = "STRE-01";
   const body = await req.json();
-  const { results, error } = await validateAddCategorySchema(body);
+  const { results, error } = await validateAddStoreSchema(body);
 
   if (error) {
     console.error(error);
     return NextResponse.json({ errors: error });
   }
 
-  const { name, description } = results;
+  const { address, city, state, zipcode, manager_name } = results;
   const created_at = new Date().toISOString();
 
-  if (!name || !description) {
+  if (!address || !city || !state || !zipcode || !manager_name) {
     return NextResponse.json({ message: "Missing fields" });
   }
 
   try {
     const result = await pool.query(
-      `INSERT INTO core.categories(name, description, created_at)
-        VALUES($1, $2, $3) RETURNING id`,
-      [name, description, created_at]
+      `INSERT INTO core.stores(address, city, state, zipcode, manager_name, created_at)
+        VALUES($1, $2, $3, $4, $5, $6) RETURNING id`,
+      [address, city, state, zipcode, manager_name, created_at]
     );
 
-    return NextResponse.json(
-      { categoryId: result.rows[0].id },
-      { status: 201 }
-    );
+    return NextResponse.json({ storeId: result.rows[0].id }, { status: 201 });
   } catch (err: any) {
     let message = "Something went wrong";
 
@@ -42,11 +39,12 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET() {
-  const ERROR_CODE = "CAT-05";
+  const ERROR_CODE = "STRE-05";
   try {
     const result = await pool.query(`
-      SELECT id, name, description, created_at, updated_at, updated_by
-      FROM core.categories WHERE is_deleted = false`);
+            SELECT id, address, city, state, zipcode, manager_name, created_at, updated_at, updated_by
+            FROM core.stores WHERE is_deleted = false
+        `);
 
     return NextResponse.json(result.rows);
   } catch (err: any) {

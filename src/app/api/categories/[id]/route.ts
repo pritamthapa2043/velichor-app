@@ -7,7 +7,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const ERROR_CODE = "CAT-02";
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const result = await pool.query(
@@ -42,7 +42,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   const ERROR_CODE = "CAT-03";
-  const { id } = params;
+  const { id } = await params;
   const body = await req.json();
 
   const { results, error } = await validateUpdateCategory(body);
@@ -98,7 +98,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   const ERROR_CODE = "CAT-04";
-  const { id } = params;
+  const { id } = await params;
   const deleted_by = req.headers.get("x-user-id") || "system";
   const deleted_at = new Date().toISOString();
 
