@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { pool } from "../../../../db/config/config";
 
 export async function GET() {
+  const ERROR_CODE = "USER-01";
   try {
     const result = await pool.query(
       `SELECT id, name, email, phone, role, is_active FROM core.users WHERE is_deleted = false`
@@ -11,6 +12,9 @@ export async function GET() {
     let message = "Something went wrong";
 
     if (err instanceof Error) message = err.message;
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(
+      { error: message, error_code: ERROR_CODE },
+      { status: 500 }
+    );
   }
 }
