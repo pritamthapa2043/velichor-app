@@ -100,7 +100,7 @@ export default function RegisterPage() {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               className="w-full px-4 py-3 border border-neutral-200 rounded focus:outline-none focus:ring-2 focus:ring-neutral-900"
-              placeholder=""
+              placeholder="+91 | Mobile Number"
             />
           </div>
 
