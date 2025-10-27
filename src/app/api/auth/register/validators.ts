@@ -12,7 +12,7 @@ const registerSchema = yup.object({
     .trim()
     .min(6, "Phone number too short")
     .max(15, "Phone number too long")
-    .required("Phone number is required"),
+    .nullable(),
   password: yup
     .string()
     .trim()

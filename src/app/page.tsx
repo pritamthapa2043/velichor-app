@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ProductCard } from "./components/product-card";
-import { products } from "./lib/products";
+import { products } from "@/app/lib/products";
 
 export default function Home() {
   return (

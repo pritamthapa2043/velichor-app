@@ -34,11 +34,19 @@ export async function POST(req: Request) {
 
     const result = await pool.query(
       `INSERT INTO core.users(name, email, phone, password_hash)
-      VALUES($1, $2, $3, $4) RETURNING id`,
+      VALUES($1, $2, $3, $4) RETURNING id, created_at`,
       [name, email, phone, hash]
     );
 
-    return NextResponse.json({ userId: result.rows[0].id }, { status: 201 });
+    return NextResponse.json(
+      {
+        userId: result.rows[0].id,
+        name,
+        email,
+        createdAt: result.rows[0].created_at,
+      },
+      { status: 201 }
+    );
   } catch (err: any) {
     let message = "Something went wrong";
 

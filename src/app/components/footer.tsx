@@ -97,7 +97,7 @@ export function Footer() {
           </div>
         </div>
         <div className="border-t border-neutral-800 pt-8 text-center text-sm text-neutral-400">
-          <p>&copy; 2025 LUXE. All rights reserved.</p>
+          <p>&copy; 2025 WISTERIA. All rights reserved.</p>
         </div>
       </div>
     </footer>
