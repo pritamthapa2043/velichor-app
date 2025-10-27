@@ -122,12 +122,14 @@ export function Header() {
                     <>
                       <Link
                         href="/auth/login"
+                        onClick={() => setUserMenuOpen(!userMenuOpen)}
                         className="block px-4 py-3 text-sm text-neutral-900 hover:bg-neutral-50 border-b border-neutral-200"
                       >
                         Sign In
                       </Link>
                       <Link
                         href="/auth/register"
+                        onClick={() => setUserMenuOpen(!userMenuOpen)}
                         className="block px-4 py-3 text-sm text-neutral-900 hover:bg-neutral-50"
                       >
                         Create Account
