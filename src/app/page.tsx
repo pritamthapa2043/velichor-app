@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { ProductCard } from "./components/product-card";
-import { products } from "./lib/products";
+
+import { products } from "../lib/products";
+import { ProductCard } from "@/components/product-card";
 
 export default function Home() {
   return (
