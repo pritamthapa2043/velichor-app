@@ -36,13 +36,14 @@ export const authStorage = {
   register: async (
     email: string,
     password: string,
-    name: string
+    name: string,
+    phone: string
   ): Promise<User | null> => {
     try {
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, name }),
+        body: JSON.stringify({ email, password, name, phone }),
       });
       if (!res.ok) throw new Error("Registration Failed");
 
@@ -75,7 +76,7 @@ export const authStorage = {
 
   logout: async () => {
     try {
-      await fetch("/api/auth/loogout", { method: "POST" });
+      await fetch("/api/auth/logout", { method: "POST" });
     } finally {
       authStorage.setCurrentUser(null);
     }

@@ -13,8 +13,13 @@ export function useAuth() {
     setIsLoaded(true);
   }, []);
 
-  const register = async (email: string, password: string, name: string) => {
-    const newUser = await authStorage.register(email, password, name);
+  const register = async (
+    email: string,
+    password: string,
+    name: string,
+    phone: string
+  ) => {
+    const newUser = await authStorage.register(email, password, name, phone);
     if (newUser) {
       setUser(newUser);
       return true;

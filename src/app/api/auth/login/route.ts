@@ -4,7 +4,6 @@ import bcrypt from "bcrypt";
 import jwt, { SignOptions, Secret } from "jsonwebtoken";
 import { validateLoginSchema } from "./validators";
 import dotenv from "dotenv";
-import { REDIRECT_ERROR_CODE } from "next/dist/client/components/redirect-error";
 
 dotenv.config();
 
@@ -61,7 +60,21 @@ export async function POST(req: Request) {
       { expiresIn: jwtExpiresIn }
     );
 
-    return NextResponse.json({ token });
+    const res = NextResponse.json({
+      message: "Login Successful",
+      userId: user.id,
+      name: user.name,
+      email: user.email,
+      createdAt: user.created_at,
+    });
+    res.cookies.set("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 24, // 1 day
+      path: "/",
+    });
+
+    return res;
   } catch (err: any) {
     let message = "Something went wrong";
 

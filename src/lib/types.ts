@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface User {
   id: string;
   email: string;
@@ -26,4 +28,22 @@ export interface Product {
 export interface WishlistItem {
   productId: string;
   addedAt: number;
+}
+
+export interface QuickLinkCardProps {
+  href: string;
+  icon: ReactNode;
+  title: string;
+  description: string;
+}
+
+export interface InfoFieldProps {
+  label: string;
+  value: string | React.ReactNode;
+}
+
+export interface NavLinkProps {
+  href: string;
+  active?: boolean;
+  children: React.ReactNode;
 }
