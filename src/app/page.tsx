@@ -2,10 +2,22 @@
 
 import Link from "next/link";
 
-import { products } from "../lib/products";
-import { ProductCard } from "@/components/product-card";
+import { productStorage } from "../lib/storage";
+import { ProductCard } from "@/components/productCard";
+import CategoriesGrid from "@/components/categoriesGrid";
+import { useEffect, useState } from "react";
+import { Product } from "@/lib/types";
 
 export default function Home() {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    async () => {
+      const productsData = await productStorage.getProducts();
+      setProducts(productsData);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -38,45 +50,8 @@ export default function Home() {
         <h2 className="text-3xl md:text-4xl font-light tracking-wide mb-12 text-center">
           Shop by Category
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            {
-              name: "Clothing",
-              href: "/shop?category=clothing",
-              image: "/luxury-clothing-collection.jpg",
-            },
-            {
-              name: "Shoes",
-              href: "/shop?category=shoes",
-              image: "/luxury-shoes-collection.png",
-            },
-            {
-              name: "Bags",
-              href: "/shop?category=bags",
-              image: "/luxury-bags-collection.jpg",
-            },
-            {
-              name: "Accessories",
-              href: "/shop?category=accessories",
-              image: "/luxury-accessories.png",
-            },
-          ].map((category) => (
-            <Link key={category.name} href={category.href}>
-              <div className="group cursor-pointer">
-                <div className="relative overflow-hidden bg-neutral-100 aspect-square mb-4">
-                  <img
-                    src={category.image || "/placeholder.svg"}
-                    alt={category.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-                  />
-                </div>
-                <h3 className="text-lg font-medium text-neutral-900 group-hover:text-neutral-700 transition text-center">
-                  {category.name}
-                </h3>
-              </div>
-            </Link>
-          ))}
-        </div>
+
+        <CategoriesGrid />
       </section>
 
       {/* Featured Products */}
@@ -85,7 +60,7 @@ export default function Home() {
           Featured Collection
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.slice(0, 8).map((product) => (
+          {(Array.isArray(products) ? products : []).map((product: any) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>

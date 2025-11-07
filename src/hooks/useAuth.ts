@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { User } from "../lib/types";
-import { authStorage } from "../lib/auth-storage";
+import { authStorage } from "../lib/authStorage";
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
@@ -36,7 +36,6 @@ export function useAuth() {
     return false;
   };
 
-  // TO BE IMPLEMENTED
   const logout = () => {
     authStorage.logout();
     setUser(null);

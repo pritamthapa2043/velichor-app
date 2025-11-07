@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const result = await pool.query(
-      `INSERT INTO core.products(name, description, price, stock_level, category_id, image_url, created_at)
+      `INSERT INTO core.products(name, description, price, stock_level, category_id, images, created_at)
       VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id`,
       [
         name,
@@ -58,9 +58,11 @@ export async function GET() {
   const ERROR_CODE = "PR0D-05";
   try {
     const result = await pool.query(
-      `SELECT id, name, description, price, stock_level, category_id, image_url,
-            created_at, updated_by, updated_at, deleted_by, deleted_at
-            FROM core.products WHERE is_deleted = false`
+      `SELECT p.id, p.name, p.description, p.price, p.stock_level, c.name AS category, p.images, p.created_at, p.updated_by, p.updated_at, 
+        p.deleted_by, p.deleted_at
+      FROM core.products p 
+      LEFT JOIN core.categories c ON c.id = p.category_id
+      WHERE p.is_deleted = false AND c.is_deleted = false`
     );
     return NextResponse.json(result.rows);
   } catch (err: any) {

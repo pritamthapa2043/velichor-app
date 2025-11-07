@@ -45,7 +45,7 @@ export async function GET() {
   const ERROR_CODE = "CAT-05";
   try {
     const result = await pool.query(`
-      SELECT id, name, description, created_at, updated_at, updated_by
+      SELECT id, name, description, image, created_at, updated_at, updated_by
       FROM core.categories WHERE is_deleted = false`);
 
     return NextResponse.json(result.rows);

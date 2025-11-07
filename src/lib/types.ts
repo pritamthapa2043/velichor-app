@@ -11,17 +11,16 @@ export interface User {
 export interface Product {
   id: string;
   name: string;
-  category: "clothing" | "shoes" | "bags" | "accessories";
+  category: string;
   price: number;
   originalPrice?: number;
-  image: string;
   images: string[];
   description: string;
   details: string[];
   sizes?: string[];
   colors?: string[];
   rating: number;
-  reviews: number;
+  reviews: JSON;
   inStock: boolean;
 }
 
@@ -46,4 +45,30 @@ export interface NavLinkProps {
   href: string;
   active?: boolean;
   children: React.ReactNode;
+}
+
+export interface CartItem {
+  id?: string;
+  productId: string;
+  quantity: number;
+  size?: string;
+  color?: string;
+  product?: Product;
+}
+
+export interface WishlistItem {
+  productId: string;
+  addedAt: number;
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  description?: string;
+  image: string;
+}
+
+export interface ImageGalleryProps {
+  images: string[];
+  productName: string;
 }

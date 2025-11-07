@@ -2,15 +2,31 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { products } from "../lib/products";
+import { productStorage } from "../lib/storage";
+import { Product } from "@/lib/types";
 
 export function SearchBar() {
   const router = useRouter();
+  const [products, setProducts] = useState<Product[]>([]);
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [results, setResults] = useState(products);
+  const [results, setResults] = useState<Product[]>([]);
+
+  // Fetch Products
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const productData = await productStorage.getProducts();
+        setProducts(productData);
+      } catch (err) {
+        console.error("Error in fetching products: ", err);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const handleSearch = (value: string) => {
     setQuery(value);
@@ -74,7 +90,11 @@ export function SearchBar() {
                   className="w-full text-left px-4 py-3 hover:bg-neutral-50 transition flex items-center gap-3"
                 >
                   <img
-                    src={product.image || "/placeholder.svg"}
+                    src={
+                      product.images && product.images.length > 0
+                        ? product.images[0]
+                        : "/placeholder.svg"
+                    }
                     alt={product.name}
                     className="w-10 h-10 object-cover rounded"
                   />

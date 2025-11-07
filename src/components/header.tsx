@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useAuth } from "../hooks/use-auth";
-import { SearchBar } from "./search-bar";
+import { useAuth } from "../hooks/useAuth";
+import { SearchBar } from "./searchBar";
 import { usePathname } from "next/navigation";
 
 export function Header() {

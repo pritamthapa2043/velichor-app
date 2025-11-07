@@ -11,9 +11,11 @@ export async function GET(
 
   try {
     const result = await pool.query(
-      `SELECT id, name, description, price, stock_level, category_id, image_url, is_deleted,
-            created_at, created_by, updated_at, updated_by 
-            FROM core.products WHERE id = $1 AND is_deleted = false`,
+      `SELECT p.id, p.name, p.description, p.price, p.stock_level, c.name AS category, p.images, p.created_at, p.updated_by, p.updated_at, 
+        p.deleted_by, p.deleted_at
+      FROM core.products p 
+      LEFT JOIN core.categories c ON c.id = p.category_id
+      WHERE p.is_deleted = false AND c.is_deleted = false AND p.id = $1`,
       [id]
     );
 

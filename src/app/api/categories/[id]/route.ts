@@ -12,7 +12,7 @@ export async function GET(
   try {
     const result = await pool.query(
       `
-            SELECT id, name, description, created_at, updated_by, updated_at\
+            SELECT id, name, description, image, created_at, updated_by, updated_at\
             FROM core.categories WHERE id = $1 AND is_deleted = false`,
       [id]
     );
