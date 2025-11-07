@@ -1,0 +1,22 @@
+INSERT INTO core.categories (name, description, image)
+VALUES
+('Jackets', 'Leather, bomber, and casual jackets for men and women',
+ 'https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=680'),
+('Jeans', 'Denim jeans of various fits and washes',
+ 'https://plus.unsplash.com/premium_photo-1674828601362-afb73c907ebe?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=753'),
+('T-Shirts', 'Casual and printed cotton T-shirts',
+ 'https://images.unsplash.com/photo-1759572095384-1a7e646d0d4f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=627'),
+('Shoes', 'Sneakers, boots, and footwear for everyday wear',
+ 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80'),
+('Accessories', 'Watches, belts, and jewelry',
+ 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687'),
+('Winterwear', 'Scarves, coats, and cold-weather clothing',
+ 'https://images.unsplash.com/photo-1649315461860-c2be63c1c2c6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=764'),
+('Bags', 'Backpacks, handbags, and totes',
+ 'https://images.unsplash.com/photo-1618354691373-f3fef04b46b1?auto=format&fit=crop&w=800&q=80'),
+('Sportswear', 'Gym and running apparel',
+ 'https://images.unsplash.com/photo-1536244955395-0b8a2a5ab5df?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687'),
+('Eyewear', 'Sunglasses and spectacles',
+ 'https://images.unsplash.com/photo-1577803645773-f96470509666?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170'),
+('Wallets', 'Leather and fabric wallets and pouches',
+ 'https://images.unsplash.com/photo-1709809681323-c1567869e7b3?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1045');

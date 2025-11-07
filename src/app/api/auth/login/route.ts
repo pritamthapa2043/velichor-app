@@ -49,13 +49,12 @@ export async function POST(req: Request) {
     if (!process.env.JWT_SECRET) {
       throw new Error("JWT_SECRET is not defined in environment variables");
     }
+
     const jwtSecret: Secret = process.env.JWT_SECRET as Secret;
-    const jwtExpiresIn: SignOptions["expiresIn"] =
-      (process.env.JWT_EXPIRES_IN as unknown as SignOptions["expiresIn"]) ??
-      "1d";
+    const jwtExpiresIn = 60 * 60 * 24; // 1 day
 
     const token = jwt.sign(
-      { id: user.id, role: user.role, email: user.email },
+      { id: user.id, role: user.role, email: user.email, name: user.name },
       jwtSecret,
       { expiresIn: jwtExpiresIn }
     );
@@ -67,10 +66,12 @@ export async function POST(req: Request) {
       email: user.email,
       createdAt: user.created_at,
     });
+
+    // Store JWT in HttpOnly Cookie
     res.cookies.set("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 60 * 24, // 1 day
+      maxAge: jwtExpiresIn,
       path: "/",
     });
 

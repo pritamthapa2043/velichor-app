@@ -60,8 +60,6 @@ export async function PUT(
     updated_at,
   };
 
-  console.log("allFields", allFields);
-
   const fields = Object.entries(allFields)
     .map(([key], i) => `${key} = $${i + 1}`)
     .join(", ");
@@ -73,9 +71,6 @@ export async function PUT(
       { message: "No valid fields to update" },
       { status: 400 }
     );
-
-  console.log("fields", fields);
-  console.log("values", values);
 
   try {
     await pool.query(

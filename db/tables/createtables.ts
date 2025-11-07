@@ -1,9 +1,11 @@
 import { pool } from "../config/config";
 import { createTableAddress } from "./core/address";
+import { createTableCartItems } from "./core/cartitems";
 import { createTableCategory } from "./core/category";
 import { createProductTable } from "./core/product";
 import { createStoreTable } from "./core/store";
 import { createUserTable } from "./core/user";
+import { createWishlistTable } from "./core/wishlist";
 import { createDeliveryTable } from "./delivery/delivery";
 import { createDeliveryPersonTable } from "./delivery/delivery_person";
 import { createAdminTable } from "./operators/admin";
@@ -22,6 +24,8 @@ export const createtables = async () => {
     await pool.query(createTableCategory);
     await pool.query(createProductTable);
     await pool.query(createStoreTable);
+    await pool.query(createTableCartItems);
+    await pool.query(createWishlistTable);
 
     // order
     await pool.query(createOrderTable);
@@ -39,7 +43,7 @@ export const createtables = async () => {
     await pool.query(createInventoryTable);
 
     console.log("All Table created successfully!");
-  } catch (error: unknown) {
+  } catch (error: any) {
     console.error("Error creating Table:", error.message);
   }
 };

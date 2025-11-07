@@ -1,18 +1,21 @@
 "use client";
 
-import type React from "react";
-
 import Link from "next/link";
 import { Product } from "../lib/types";
-import { useWishlist } from "../hooks/use-wishlist";
+import { useWishlist } from "../hooks/useWishlist";
+import { useEffect, useState } from "react";
 
 interface ProductCardProps {
   product: Product;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const { isInWishlist, addItem, removeItem } = useWishlist();
-  const inWishlist = isInWishlist(product.id);
+  const { wishlist, isInWishlist, addItem, removeItem } = useWishlist();
+  const [inWishlist, setInWishlist] = useState(isInWishlist(product.id));
+
+  useEffect(() => {
+    setInWishlist(isInWishlist(product.id));
+  }, [wishlist, product.id]);
 
   const handleWishlistToggle = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -24,11 +27,15 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <Link href={`/product/${product.id}`}>
+    <Link href={`/product/${String(product.id)}`}>
       <div className="group cursor-pointer">
         <div className="relative overflow-hidden bg-neutral-100 aspect-[3/4] mb-4">
           <img
-            src={product.image || "/placeholder.svg"}
+            src={
+              Array.isArray(product.images) && product.images.length > 0
+                ? product.images[0]
+                : "/placeholder.svg"
+            }
             alt={product.name}
             className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
           />
@@ -59,8 +66,21 @@ export function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
         <div className="flex items-center gap-1 mt-2">
-          <span className="text-xs text-neutral-600">★ {product.rating}</span>
-          <span className="text-xs text-neutral-500">({product.reviews})</span>
+          <span className="text-xs text-neutral-600">
+            ★{" "}
+            {typeof product.rating === "number"
+              ? product.rating.toFixed(1)
+              : ""}
+          </span>
+          <span className="text-xs text-neutral-500">
+            (
+            {typeof product.reviews === "number"
+              ? product.reviews
+              : Array.isArray(product.reviews)
+              ? product.reviews.length
+              : ""}
+            )
+          </span>
         </div>
       </div>
     </Link>

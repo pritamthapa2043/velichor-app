@@ -1,7 +1,5 @@
-import { Yaldevi } from "next/font/google";
 import type { User } from "./types";
 
-const USERS_KEY = "wisteria_users";
 const CURRENT_USER_KEY = "wisteria_current_user";
 
 export const authStorage = {
@@ -19,19 +17,39 @@ export const authStorage = {
   },
 
   getCurrentUser: (): User | null => {
-    if (typeof window === "undefined") return null;
     const user = localStorage.getItem(CURRENT_USER_KEY);
     return user ? JSON.parse(user) : null;
   },
 
   setCurrentUser: (user: User | null) => {
-    if (typeof window === "undefined") return;
     if (user) {
       localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
     } else {
       localStorage.removeItem(CURRENT_USER_KEY);
     }
   },
+
+  clear() {
+    localStorage.removeItem(CURRENT_USER_KEY);
+  },
+
+  // checkAuth: async () => {
+  //   try {
+  //     const res = await fetch("/api/auth/check-auth")
+  //     if(res.status === 401) {
+  //       authStorage.clear()
+  //       window.location.href = "/login"
+  //       return false
+  //     }
+
+  //     const data = await res.json()
+  //     return data.authenticated
+  //   } catch (err) {
+  //     authStorage.clear()
+  //     window.location.href = "/login"
+  //     return false
+  //   }
+  // },
 
   register: async (
     email: string,
@@ -63,6 +81,7 @@ export const authStorage = {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
+
       if (!res.ok) throw new Error("Login Failed");
 
       const data: User = await res.json();
