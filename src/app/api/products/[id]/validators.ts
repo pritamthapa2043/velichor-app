@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { formatYupErrors } from "@/lib/formatYupErrors";
 
 const addProductSchema = yup.object({
   name: yup.string().trim().required("Name is required"),
@@ -22,7 +23,7 @@ const addProductSchema = yup.object({
     .required("Image URL is required"),
 });
 
-export async function validateAddProductSchema(data: any) {
+export async function validateAddProductSchema(data: unknown) {
   try {
     const results = await addProductSchema.validate(data, {
       abortEarly: false,
@@ -30,16 +31,8 @@ export async function validateAddProductSchema(data: any) {
     });
 
     return { results, error: null };
-  } catch (err: any) {
-    const error: { [key: string]: string[] } = {};
-    if (err.name === "ValidationError") {
-      err.inner.forEach((e: any) => {
-        if (!error[e.path]) error[e.path] = [];
-        error[e.path].push(e.message);
-      });
-    }
-
-    return { results: null, error };
+  } catch (err: unknown) {
+    return { results: null, error: formatYupErrors(err) };
   }
 }
 
@@ -56,7 +49,7 @@ const updateProductSchema = yup.object({
     .required("Image URL is required"),
 });
 
-export async function validateUpdateProduct(data: any) {
+export async function validateUpdateProduct(data: unknown) {
   try {
     const results = await updateProductSchema.validate(data, {
       abortEarly: false,
@@ -64,15 +57,7 @@ export async function validateUpdateProduct(data: any) {
     });
 
     return { results, error: null };
-  } catch (err: any) {
-    const error: { [key: string]: string[] } = {};
-
-    if (err.name === "ValidationError") {
-      err.inner.forEach((e: any) => {
-        if (!error[e.path]) error[e.path] = [];
-        error[e.path].push(e.message);
-      });
-    }
-    return { results: null, error };
+  } catch (err: unknown) {
+    return { results: null, error: formatYupErrors(err) };
   }
 }

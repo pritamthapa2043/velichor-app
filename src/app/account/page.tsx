@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import Link from "next/link";
-import { ReactNode, useEffect } from "react";
+import { useEffect } from "react";
 import { InfoFieldProps, NavLinkProps, QuickLinkCardProps } from "@/lib/types";
 
 const QuickLinkCard = ({

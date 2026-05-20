@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { formatYupErrors } from "@/lib/formatYupErrors";
 
 // Define allowed payment types and statuses
 const paymentTypes = ["credit_card", "paypal", "bank_transfer"];
@@ -48,21 +49,14 @@ const updatePaymentSchema = yup.object({
     .required("Updated by is required"),
 });
 
-export async function validateUpdatePayment(data: any) {
+export async function validateUpdatePayment(data: unknown) {
   try {
     const results = await updatePaymentSchema.validate(data, {
       abortEarly: false,
       stripUnknown: true,
     });
     return { results, error: null };
-  } catch (err: any) {
-    const error: { [key: string]: string[] } = {};
-    if (err.name === "ValidationError") {
-      err.inner.forEach((e: any) => {
-        if (!error[e.path]) error[e.path] = [];
-        error[e.path].push(e.message);
-      });
-    }
-    return { results: null, error };
+  } catch (err: unknown) {
+    return { results: null, error: formatYupErrors(err) };
   }
 }

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { pool } from "../../../../../db/config/config";
 import bcrypt from "bcrypt";
-import jwt, { SignOptions, Secret } from "jsonwebtoken";
+import jwt, { Secret } from "jsonwebtoken";
 import { validateLoginSchema } from "./validators";
 import dotenv from "dotenv";
 
@@ -76,7 +76,7 @@ export async function POST(req: Request) {
     });
 
     return res;
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
 
     if (err instanceof Error) message = err.message;

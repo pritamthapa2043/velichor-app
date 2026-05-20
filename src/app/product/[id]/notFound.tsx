@@ -8,7 +8,7 @@ export default function NotFound() {
           Product Not Found
         </h1>
         <p className="text-neutral-600 mb-8">
-          The product you're looking for doesn't exist.
+          The product you&apos;re looking for doesn&apos;t exist.
         </p>
         <Link
           href="/shop"

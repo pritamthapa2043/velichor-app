@@ -1,6 +1,5 @@
-import {NextResponse} from 'next/server';
-import {pool} from '../../../../db/config/config';
-import Razorpay from 'razorpay';
+import { NextResponse } from "next/server";
+import { pool } from "../../../../db/config/config";
 
 export async function GET() {
   try {
@@ -9,25 +8,26 @@ export async function GET() {
     );
     console.log(result.rows);
     return NextResponse.json(result.rows);
-  } catch (err: any) {
-    let message = 'Something went wrong';   
+  } catch (err: unknown) {
+    let message = "Something went wrong";
     if (err instanceof Error) message = err.message;
-    return NextResponse.json({error: message}, {status: 500});
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    let {
+    const {
       order_id,
       type,
       amount,
-      status = "pending",
+      status: statusInput = "pending",
       transaction_id = null,
       paid_at = null,
       updated_by = "SYSTEM",
       note = null,
     } = body;
+    let status = (statusInput || "pending").toLowerCase();
 
     // Validate required fields
     if (!order_id || !type || !amount) {
@@ -37,8 +37,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Normalize status to match check constraint
-    status = (status || "pending").toLowerCase();
     if (!["pending", "success", "failed", "refunded", "canceled", "authorized"].includes(status)) {
       status = "pending"; // fallback to safe default
     }
@@ -53,7 +51,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
-    const order = orderCheck.rows[0];
     const created_at = new Date().toISOString();
 
     // Insert payment
@@ -67,8 +64,6 @@ export async function POST(req: Request) {
 
     // If payment is successful, update order status and history
     if (status === "success") {
-      const previousStatus = order.status;
-
       await pool.query(
         `UPDATE "order".orders 
          SET status='success', updated_at=NOW(), updated_by=$1 
@@ -86,12 +81,11 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ payment: result.rows[0] }, { status: 201 });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Payment API Error:", error);
-    return NextResponse.json(
-      { error: error.message || "Failed to create payment" },
-      { status: 500 }
-    );
+    const msg =
+      error instanceof Error ? error.message : "Failed to create payment";
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
 
@@ -152,7 +146,7 @@ export async function POST(req: Request) {
 //       payment,
 //       razorpayOrder,
 //     });
-//   } catch (err: any) {
+//   } catch (err: unknown) {
 //     console.error("Error creating payment:", err);
 //     return NextResponse.json(
 //       { error: err.message || "Something went wrong" },

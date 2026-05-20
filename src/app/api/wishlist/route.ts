@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     );
 
     return NextResponse.json(result.rows);
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
     if (err instanceof Error) message = err.message;
     return NextResponse.json(
@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ id: insertResult.rows[0].id }, { status: 201 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
     if (err instanceof Error) message = err.message;
     return NextResponse.json(

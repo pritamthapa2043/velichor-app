@@ -13,7 +13,7 @@ export const cartStorage = {
 
       if (!res.ok) throw new Error("Failed to fetch cart");
       const data = await res.json();
-      return toCamelCaseDeep(data);
+      return toCamelCaseDeep(data) as CartItem[];
     } catch (err) {
       console.error("Error fetching Cart: ", err);
       return [];
@@ -93,7 +93,8 @@ export const wishlistStorage = {
         credentials: "include",
       });
       if (!res.ok) throw new Error("Failed to fetch wishlist");
-      return await res.json();
+      const data = await res.json();
+      return toCamelCaseDeep(data) as WishlistItem[];
     } catch (err) {
       console.error("Error fetching wishlist: ", err);
       return [];
@@ -111,7 +112,7 @@ export const wishlistStorage = {
       });
       if (!res.ok) throw new Error("Failed to add to wishlist");
       return await res.json();
-    } catch (err) {
+    } catch {
       console.error("Failed to add to wishlist");
     }
   },
@@ -149,7 +150,7 @@ export const productStorage = {
 
       const data = await res.json();
 
-      return toCamelCaseDeep(data);
+      return toCamelCaseDeep(data) as Product[];
     } catch (err) {
       console.error("Error fetching products:", err);
       return [];
@@ -164,7 +165,7 @@ export const categoryStorage = {
       if (!res.ok) throw new Error("Error in fetching categories");
 
       return await res.json();
-    } catch (err) {
+    } catch {
       console.error("Error in fetching categories");
       return [];
     }

@@ -31,7 +31,7 @@ export function ProductOptions({ product }: ProductOptionsProps) {
       size: selectedSize,
       color: selectedColor,
     };
-    addItem(toSnakeCaseDeep(cartItem));
+    addItem(toSnakeCaseDeep(cartItem) as CartItem);
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2000);
   };
@@ -78,9 +78,9 @@ export function ProductOptions({ product }: ProductOptionsProps) {
         </div>
         <span className="text-sm text-neutral-600">
           {product.rating} (
-          {Array.isArray((product as any).reviews)
-            ? ((product as any).reviews as any[]).length
-            : Number((product as any).reviews ?? 0)}{" "}
+          {Array.isArray(product.reviews)
+            ? product.reviews.length
+            : Number(product.reviews ?? 0)}{" "}
           reviews)
         </span>
       </div>

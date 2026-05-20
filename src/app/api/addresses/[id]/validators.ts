@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { formatYupErrors } from "@/lib/formatYupErrors";
 
 const addAddressSchema = yup.object({
   user_id: yup
@@ -16,7 +17,7 @@ const addAddressSchema = yup.object({
     .matches(/^\d{6}$/, "Pincode must be 6 digits"),
 });
 
-export async function validateAddAddressSchema(data: any) {
+export async function validateAddAddressSchema(data: unknown) {
   try {
     const results = await addAddressSchema.validate(data, {
       abortEarly: false,
@@ -24,16 +25,8 @@ export async function validateAddAddressSchema(data: any) {
     });
 
     return { results, error: null };
-  } catch (err: any) {
-    const error: { [key: string]: string[] } = {};
-    if (err.name === "ValidationError") {
-      err.inner.forEach((e: any) => {
-        if (!error[e.path]) error[e.path] = [];
-        error[e.path].push(e.message);
-      });
-    }
-
-    return { results: null, error };
+  } catch (err: unknown) {
+    return { results: null, error: formatYupErrors(err) };
   }
 }
 
@@ -49,7 +42,7 @@ const updateAddressSchema = yup.object({
     .matches(/^\d{6}$/, "Pincode must be 6 digits"),
 });
 
-export async function validateUpdateAddress(data: any) {
+export async function validateUpdateAddress(data: unknown) {
   try {
     const results = await updateAddressSchema.validate(data, {
       abortEarly: false,
@@ -57,15 +50,7 @@ export async function validateUpdateAddress(data: any) {
     });
 
     return { results, error: null };
-  } catch (err: any) {
-    const error: { [key: string]: string[] } = {};
-
-    if (err.name === "ValidationError") {
-      err.inner.forEach((e: any) => {
-        if (!error[e.path]) error[e.path] = [];
-        error[e.path].push(e.message);
-      });
-    }
-    return { results: null, error };
+  } catch (err: unknown) {
+    return { results: null, error: formatYupErrors(err) };
   }
 }

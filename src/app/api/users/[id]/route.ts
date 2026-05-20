@@ -4,10 +4,10 @@ import { validateUpdateUser } from "./validators";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const ERROR_CODE = "USER-02";
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const result = await pool.query(
@@ -21,7 +21,7 @@ export async function GET(
       );
 
     return NextResponse.json(result.rows[0]);
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
 
     if (err instanceof Error) message = err.message;
@@ -34,10 +34,10 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const ERROR_CODE = "USER-03";
-  const { id } = params;
+  const { id } = await params;
   const body = await req.json();
 
   const { results, error } = await validateUpdateUser(body);
@@ -76,7 +76,7 @@ export async function PUT(
       [...values, id]
     );
     return NextResponse.json({ message: "User updated" });
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
 
     if (err instanceof Error) message = err.message;
@@ -90,10 +90,10 @@ export async function PUT(
 // SOFT DELETE
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const ERROR_CODE = "USER-04";
-  const { id } = params;
+  const { id } = await params;
 
   // Extract deleted_by from headers or body
   const deleted_by = "SYSTEM";
@@ -109,7 +109,7 @@ export async function DELETE(
       [id, deleted_by, deleted_at]
     );
     return NextResponse.json({ message: "User Deleted" });
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
 
     if (err instanceof Error) message = err.message;

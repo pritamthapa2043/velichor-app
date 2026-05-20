@@ -102,7 +102,7 @@ export const authStorage = {
   },
 
   initializeAdminUser: async () => {
-    const users = await authStorage.getUsers();
+    await authStorage.getUsers();
   },
 
   // Initialize admin user on module load
