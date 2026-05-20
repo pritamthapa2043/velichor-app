@@ -20,7 +20,8 @@ export interface Product {
   sizes?: string[];
   colors?: string[];
   rating: number;
-  reviews: JSON;
+  /** DB / API may return a count (number) or a list of review objects */
+  reviews: unknown;
   inStock: boolean;
 }
 

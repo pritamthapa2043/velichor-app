@@ -17,6 +17,9 @@ export const createSchema = async () => {
 
     console.log("All Schema created successfully!");
   } catch (error: unknown) {
-    console.error("Error creating Schema:", error.message);
+    console.error(
+      "Error creating Schema:",
+      error instanceof Error ? error.message : error
+    );
   }
 };

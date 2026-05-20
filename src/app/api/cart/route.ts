@@ -7,7 +7,6 @@ import { getCurrentUser } from "@/lib/auth";
 export async function GET(req: NextRequest) {
   const ERROR_CODE = "CART-01";
   try {
-    const { searchParams } = new URL(req.url);
     const user = getCurrentUser(req);
 
     if (!user || !user.id) {
@@ -27,7 +26,7 @@ export async function GET(req: NextRequest) {
     );
 
     return NextResponse.json(result.rows);
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
     if (err instanceof Error) message = err.message;
     return NextResponse.json(
@@ -79,7 +78,7 @@ export async function POST(req: NextRequest) {
     );
 
     return NextResponse.json({ id: result.rows[0].id }, { status: 201 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
     if (err instanceof Error) message = err.message;
     return NextResponse.json(
@@ -115,7 +114,7 @@ export async function DELETE(req: NextRequest) {
     );
 
     return NextResponse.json({ message: "Cart has been cleared" });
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
     if (err instanceof Error) message = err.message;
     return NextResponse.json(

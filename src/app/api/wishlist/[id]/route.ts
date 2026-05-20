@@ -5,11 +5,12 @@ import { getCurrentUser } from "@/lib/auth";
 // Remove product from wishlist
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const ERROR_CODE = "WISHLIST-03";
   try {
-    const productId = Number(params.id);
+    const { id } = await params;
+    const productId = Number(id);
     const user = getCurrentUser(req);
 
     if (!user || !user.id) {
@@ -29,7 +30,7 @@ export async function DELETE(
     }
 
     return NextResponse.json({ id: result.rows[0].id });
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
     if (err instanceof Error) message = err.message;
     return NextResponse.json(

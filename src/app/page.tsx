@@ -12,10 +12,10 @@ export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    async () => {
+    void (async () => {
       const productsData = await productStorage.getProducts();
       setProducts(productsData);
-    };
+    })();
   }, []);
 
   return (
@@ -60,7 +60,7 @@ export default function Home() {
           Featured Collection
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {(Array.isArray(products) ? products : []).map((product: any) => (
+          {(Array.isArray(products) ? products : []).map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>

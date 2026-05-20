@@ -4,7 +4,7 @@ import { validateUpdateCategory } from "./validators";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const ERROR_CODE = "CAT-02";
   const { id } = await params;
@@ -26,7 +26,7 @@ export async function GET(
       );
 
     return NextResponse.json(result.rows[0]);
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
 
     if (err instanceof Error) message = err.message;
@@ -39,7 +39,7 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const ERROR_CODE = "CAT-03";
   const { id } = await params;
@@ -81,7 +81,7 @@ export async function PUT(
     );
 
     return NextResponse.json({ message: "Category Updated" });
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
 
     if (err instanceof Error) message = err.message;
@@ -95,7 +95,7 @@ export async function PUT(
 // SOFT DELETE
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const ERROR_CODE = "CAT-04";
   const { id } = await params;
@@ -109,7 +109,7 @@ export async function DELETE(
     );
 
     return NextResponse.json({ message: "Category Deleted" });
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
 
     if (err instanceof Error) message = err.message;

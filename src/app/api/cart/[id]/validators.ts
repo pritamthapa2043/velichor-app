@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { formatYupErrors } from "@/lib/formatYupErrors";
 
 const addCartItemSchema = yup.object({
   product_id: yup
@@ -15,22 +16,15 @@ const addCartItemSchema = yup.object({
   color: yup.string().trim().max(50, "Color is too long").optional(),
 });
 
-export async function validateAddCartItemSchema(data: any) {
+export async function validateAddCartItemSchema(data: unknown) {
   try {
     const results = await addCartItemSchema.validate(data, {
       abortEarly: false,
       stripUnknown: true,
     });
     return { results, error: null };
-  } catch (err: any) {
-    const error: { [key: string]: string[] } = {};
-    if (err.name === "ValidationError") {
-      err.inner.forEach((e: any) => {
-        if (!error[e.path]) error[e.path] = [];
-        error[e.path].push(e.message);
-      });
-    }
-    return { results: null, error };
+  } catch (err: unknown) {
+    return { results: null, error: formatYupErrors(err) };
   }
 }
 
@@ -44,21 +38,14 @@ const updateCartItemSchema = yup.object({
   color: yup.string().trim().max(50, "Color is too long").optional(),
 });
 
-export async function validateUpdateCartItem(data: any) {
+export async function validateUpdateCartItem(data: unknown) {
   try {
     const results = await updateCartItemSchema.validate(data, {
       abortEarly: false,
       stripUnknown: true,
     });
     return { results, error: null };
-  } catch (err: any) {
-    const error: { [key: string]: string[] } = {};
-    if (err.name === "ValidationError") {
-      err.inner.forEach((e: any) => {
-        if (!error[e.path]) error[e.path] = [];
-        error[e.path].push(e.message);
-      });
-    }
-    return { results: null, error };
+  } catch (err: unknown) {
+    return { results: null, error: formatYupErrors(err) };
   }
 }

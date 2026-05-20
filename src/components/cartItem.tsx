@@ -1,4 +1,3 @@
-import { useCart } from "@/hooks/useCart";
 import { productStorage } from "@/lib/storage";
 import { CartItem as CartItemType, Product } from "@/lib/types";
 import Link from "next/link";

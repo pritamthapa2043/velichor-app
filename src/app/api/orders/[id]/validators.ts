@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { formatYupErrors } from "@/lib/formatYupErrors";
 
 const updateOrderSchema = yup.object({
   user_id: yup
@@ -30,21 +31,14 @@ const updateOrderSchema = yup.object({
     .required("Total amount is required"),
 });
 
-export async function validateUpdateOrder(data: any) {
+export async function validateUpdateOrder(data: unknown) {
   try {
     const results = await updateOrderSchema.validate(data, {
       abortEarly: false,
       stripUnknown: true,
     });
     return { results, error: null };
-  } catch (err: any) {
-    const error: { [key: string]: string[] } = {};
-    if (err.name === "ValidationError") {
-      err.inner.forEach((e: any) => {
-        if (!error[e.path]) error[e.path] = [];
-        error[e.path].push(e.message);
-      });
-    }
-    return { results: null, error };
+  } catch (err: unknown) {
+    return { results: null, error: formatYupErrors(err) };
   }
 }

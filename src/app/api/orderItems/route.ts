@@ -8,7 +8,7 @@ export async function GET() {
     );
     console.log(result.rows);
     return NextResponse.json(result.rows);
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = 'Something went wrong';   
     if (err instanceof Error) message = err.message;
     return NextResponse.json({error: message}, {status: 500});
@@ -31,12 +31,12 @@ export async function POST(req: Request) {
     } = body;
 
     // Define required fields properly
-    const requiredFields:any = {
+    const requiredFields: Record<string, unknown> = {
       order_id,
       product_id,
       quantity,
       unit_price,
-      total // discount and deleted fields might be optional in most schemas
+      total,
     };
 
     // Find missing required fields (check for undefined or null)
@@ -92,7 +92,7 @@ const product_name = productCheck.rows[0].name;
     );
 
     return NextResponse.json(result.rows[0], { status: 201 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Error inserting order item:", err);
 
     let message = "Something went wrong";

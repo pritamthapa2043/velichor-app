@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import type { WishlistItem } from "../lib/types";
 import { wishlistStorage } from "../lib/storage";
-import { toCamelCaseDeep } from "@/lib/caseConverter";
 
 export function useWishlist() {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
@@ -11,7 +10,7 @@ export function useWishlist() {
 
   const fetchWishlist = async () => {
     const wishlistData = await wishlistStorage.getWishlist();
-    setWishlist(toCamelCaseDeep(wishlistData)); // ✅ normalize here
+    setWishlist(wishlistData);
     setIsLoaded(true);
   };
 

@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { formatYupErrors } from "@/lib/formatYupErrors";
 
 const registerSchema = yup.object({
   name: yup.string().required("Name is required").trim(),
@@ -20,21 +21,14 @@ const registerSchema = yup.object({
     .required("Password is required"),
 });
 
-export async function validateRegisterSchema(data: any) {
+export async function validateRegisterSchema(data: unknown) {
   try {
     const results = await registerSchema.validate(data, {
       abortEarly: false,
       stripUnknown: true,
     });
     return { results, error: null };
-  } catch (err: any) {
-    const error: { [key: string]: string[] } = {};
-    if (err.name === "ValidationError") {
-      err.inner.forEach((e: any) => {
-        if (!error[e.path]) error[e.path] = [];
-        error[e.path].push(e.message);
-      });
-    }
-    return { results: null, error };
+  } catch (err: unknown) {
+    return { results: null, error: formatYupErrors(err) };
   }
 }

@@ -9,7 +9,7 @@ export async function GET() {
     );
     console.log(result.rows);
     return NextResponse.json(result.rows);
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong"; 
 
     if (err instanceof Error) message = err.message;
@@ -24,8 +24,16 @@ export async function POST(req: Request) {
     const { user_id, store_id, delivery_address_id, status, total_amount } = body;
 
     // Check for missing fields
-    const requiredFields :any = { user_id, store_id, delivery_address_id, status, total_amount };
-    const missingFields = Object.keys(requiredFields).filter(key => !requiredFields[key]);
+    const requiredFields: Record<string, unknown> = {
+      user_id,
+      store_id,
+      delivery_address_id,
+      status,
+      total_amount,
+    };
+    const missingFields = Object.keys(requiredFields).filter(
+      (key) => !requiredFields[key]
+    );
 
     if (missingFields.length > 0) {
       return NextResponse.json(
@@ -72,7 +80,7 @@ export async function POST(req: Request) {
     );
 
     return NextResponse.json({ message: "Order Created", order: result.rows[0] }, { status: 201 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
     if (err instanceof Error) message = err.message;
     return NextResponse.json({ error: message }, { status: 500 });

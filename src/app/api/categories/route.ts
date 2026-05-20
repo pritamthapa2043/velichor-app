@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
       { categoryId: result.rows[0].id },
       { status: 201 }
     );
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
 
     if (err instanceof Error) message = err.message;
@@ -49,7 +49,7 @@ export async function GET() {
       FROM core.categories WHERE is_deleted = false`);
 
     return NextResponse.json(result.rows);
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
 
     if (err instanceof Error) message = err.message;

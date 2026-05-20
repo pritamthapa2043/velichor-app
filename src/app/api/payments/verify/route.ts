@@ -71,11 +71,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: "Payment verified and order updated successfully" });
 
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Error verifying payment:", err);
-    return NextResponse.json(
-      { error: err.message || "Something went wrong" },
-      { status: 500 }
-    );
+    const msg = err instanceof Error ? err.message : "Something went wrong";
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

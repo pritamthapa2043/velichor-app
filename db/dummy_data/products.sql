@@ -1,5 +1,5 @@
 INSERT INTO core.products 
-(name, description, price, stock_level, category_id, image_url, is_deleted, updated_by)
+(name, description, price, stock_level, category_id, images, is_deleted, updated_by)
 VALUES
 (
   'Classic Leather Jacket',

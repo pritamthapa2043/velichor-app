@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { formatYupErrors } from "@/lib/formatYupErrors";
 
 const addStoreSchema = yup.object({
   address: yup.string().trim().required("Address is required"),
@@ -8,7 +9,7 @@ const addStoreSchema = yup.object({
   manager_name: yup.string().trim().required("Manager name is required"),
 });
 
-export async function validateAddStoreSchema(data: any) {
+export async function validateAddStoreSchema(data: unknown) {
   try {
     const results = await addStoreSchema.validate(data, {
       abortEarly: false,
@@ -16,16 +17,8 @@ export async function validateAddStoreSchema(data: any) {
     });
 
     return { results, error: null };
-  } catch (err: any) {
-    const error: { [key: string]: string[] } = {};
-    if (err.name === "ValidationError") {
-      err.inner.forEach((e: any) => {
-        if (!error[e.path]) error[e.path] = [];
-        error[e.path].push(e.message);
-      });
-    }
-
-    return { results: null, error };
+  } catch (err: unknown) {
+    return { results: null, error: formatYupErrors(err) };
   }
 }
 
@@ -37,7 +30,7 @@ const updateStoreSchema = yup.object({
   manager_name: yup.string().trim(),
 });
 
-export async function validateUpdateStore(data: any) {
+export async function validateUpdateStore(data: unknown) {
   try {
     const results = await updateStoreSchema.validate(data, {
       abortEarly: false,
@@ -45,15 +38,7 @@ export async function validateUpdateStore(data: any) {
     });
 
     return { results, error: null };
-  } catch (err: any) {
-    const error: { [key: string]: string[] } = {};
-
-    if (err.name === "ValidationError") {
-      err.inner.forEach((e: any) => {
-        if (!error[e.path]) error[e.path] = [];
-        error[e.path].push(e.message);
-      });
-    }
-    return { results: null, error };
+  } catch (err: unknown) {
+    return { results: null, error: formatYupErrors(err) };
   }
 }

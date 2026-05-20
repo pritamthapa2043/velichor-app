@@ -6,7 +6,7 @@ import { getCurrentUser } from "@/lib/auth";
 // Get a single cart item by id
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const ERROR_CODE = "CART-03";
   const { id } = await params;
@@ -33,7 +33,7 @@ export async function GET(
     }
 
     return NextResponse.json(result.rows[0]);
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
     if (err instanceof Error) message = err.message;
     return NextResponse.json(
@@ -46,7 +46,7 @@ export async function GET(
 // Update a cart item
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const ERROR_CODE = "CART-04";
   const { id } = await params;
@@ -110,7 +110,7 @@ export async function PUT(
     );
 
     return NextResponse.json({ message: "Cart item updated" });
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
     if (err instanceof Error) message = err.message;
     return NextResponse.json(
@@ -123,7 +123,7 @@ export async function PUT(
 // Soft delete a cart item
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const ERROR_CODE = "CART-05";
   const { id } = await params;
@@ -150,7 +150,7 @@ export async function DELETE(
     );
 
     return NextResponse.json({ message: "Cart item deleted" });
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
     if (err instanceof Error) message = err.message;
     return NextResponse.json(

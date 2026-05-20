@@ -6,13 +6,14 @@ import { validateRegisterSchema } from "./validators";
 export async function POST(req: Request) {
   const ERROR_CODE = "AUTH-01";
   const body = await req.json();
-  const { results, error } = await validateRegisterSchema(body);
+  const validation = await validateRegisterSchema(body);
 
-  if (error) {
-    console.error(error);
-    return NextResponse.json({ errors: error });
+  if (validation.error) {
+    console.error(validation.error);
+    return NextResponse.json({ errors: validation.error });
   }
-  const { name, email, password, phone } = body;
+
+  const { name, email, password, phone } = validation.results;
 
   if (!email || !password || !name || !phone) {
     return NextResponse.json({ message: "Missing fields" }, { status: 400 });
@@ -47,7 +48,7 @@ export async function POST(req: Request) {
       },
       { status: 201 }
     );
-  } catch (err: any) {
+  } catch (err: unknown) {
     let message = "Something went wrong";
 
     if (err instanceof Error) message = err.message;

@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { formatYupErrors } from "@/lib/formatYupErrors";
 
 const updateUserSchema = yup.object({
   name: yup.string().optional(),
@@ -14,21 +15,14 @@ const updateUserSchema = yup.object({
     .optional(),
 });
 
-export async function validateUpdateUser(data: any) {
+export async function validateUpdateUser(data: unknown) {
   try {
     const results = await updateUserSchema.validate(data, {
       abortEarly: false,
       stripUnknown: true,
     });
     return { results, error: null };
-  } catch (err: any) {
-    const error: { [key: string]: string[] } = {};
-    if (err.name === "ValidationError") {
-      err.inner.forEach((e: any) => {
-        if (!error[e.path]) error[e.path] = [];
-        error[e.path].push(e.message);
-      });
-    }
-    return { results: null, error };
+  } catch (err: unknown) {
+    return { results: null, error: formatYupErrors(err) };
   }
 }
